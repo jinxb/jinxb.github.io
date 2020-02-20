@@ -4,18 +4,18 @@
   
     
     <entry>
-      <title>浏览器访问服务器的过程</title>
-      <link href="/2020/02/08/%E9%9D%A2%E8%AF%95-02/"/>
-      <url>/2020/02/08/%E9%9D%A2%E8%AF%95-02/</url>
+      <title>跨域的实现</title>
+      <link href="/2020/02/20/%E8%B7%A8%E5%9F%9F-1/"/>
+      <url>/2020/02/20/%E8%B7%A8%E5%9F%9F-1/</url>
       
-        <content type="html"><![CDATA[<blockquote><p>从浏览器地址栏输入URL到展示页面经历了什么~</p></blockquote><ol><li>在浏览器地址栏中输入网址。</li><li>浏览器通过用户在地址栏中输入的url构建HTTP请求报文。</li><li>浏览器发起DNS解析请求，将域名转换为IP地址</li><li>浏览器将请求报文发送给服务器。</li><li>服务器接收请求报文，并解析。</li><li>浏览器处理用户请求，并将处理结果封装成HTTP响应报文。</li><li>服务器将HTTP响应报文发送给浏览器。</li><li>浏览器接收服务器响应的HTTP报文，并解析。</li><li>浏览器解析HTML页面并展示，在解析HTML页面时遇到新的资源需要再次发起请求。</li><li>最终浏览器展示出页面。</li></ol>]]></content>
+        <content type="html"><![CDATA[<blockquote><p>跨域–，为了访问别人的服务器</p></blockquote><h2 id="跨域的实现原理"><a href="#跨域的实现原理" class="headerlink" title="跨域的实现原理"></a>跨域的实现原理</h2><blockquote><p style="text-indent:2em">XMLHttpRequest对象默认情况下无法获取非同源服务器下的数据，所以可以利用script标签的src属性引入一个外部文件，这个外部文件是不涉及同源策略的影响的。</p></blockquote><blockquote><p style="text-indent:2em">跨域的本质其实就是服务器返回一个方法的调用，这个方法是我们是事先定义好的，而方法中的参数就是我们想要的数据。</p></blockquote><blockquote><ol><li>访问外部js文件</li><li>动态创建script标签传入动态参数</li><li>前端界面决定方法名称</li><li>给window对象增加属性进行方法定义</li></ol></blockquote><h2 id="淘宝关键词案例"><a href="#淘宝关键词案例" class="headerlink" title="淘宝关键词案例"></a>淘宝关键词案例</h2><blockquote><p>淘宝提示词接口如下：</p><ol><li>地址：<a href="https://suggest.taobao.com/sug" target="_blank" rel="noopener">https://suggest.taobao.com/sug</a></li><li>请求类型：get</li><li>参数：q——关键词，callback——回调方法名称</li><li>返回数据格式：json</li></ol></blockquote><pre><code>window.onload = function(){            var btn = document.querySelector(&quot;#btn&quot;);            btn.onclick = function(){                var keywordValue = document.querySelector(&quot;#keyword&quot;).value;                var script = document.createElement(&quot;script&quot;);                script.src = &quot;https://suggest.taobao.com/sug?q=&quot;+keywordValue+&quot;&amp;callback=test&quot;;                window[&quot;test&quot;] = function(data){                    var tdTag = &quot;&quot;;                    for(var i=0;i&lt;data.result.length;i++){                        var temp = data.result[i];                        var tempSug = temp[0];                        tdTag += &quot;&lt;tr&gt;&lt;td&gt;&quot;+tempSug+&quot;&lt;/td&gt;&lt;tr&gt;&quot;;                    }                    var tbody = document.querySelector(&quot;tbody&quot;);                    tbody.innerHTML = tdTag;                }                var head = document.querySelector(&quot;head&quot;);                head.appendChild(script);            }        }</code></pre><blockquote><p>结果如下</p></blockquote><p> ![跨域][1]<br>  [1]: <a href="https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/post1.jpg" target="_blank" rel="noopener">https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/post1.jpg</a></p>]]></content>
       
       
       <categories>
           
           <category> 前端 </category>
           
-          <category> 面试 </category>
+          <category> 跨域 </category>
           
       </categories>
       
@@ -24,7 +24,38 @@
             
             <tag> 前端 </tag>
             
-            <tag> 面试 </tag>
+            <tag> js </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Ajax的封装</title>
+      <link href="/2020/02/19/ajax-1/"/>
+      <url>/2020/02/19/ajax-1/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>原生js封装一个ajax</p></blockquote><h2 id="将ajax封装"><a href="#将ajax封装" class="headerlink" title="将ajax封装"></a>将ajax封装</h2><pre><code>function myAjax(type,url,params,dataType,callback,async){        var xhr = null;        //1.创建异步对象        if(window.XMLHttpRequest){            xhr = new XMLHttpRequest();        }else{            xhr = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);//兼容IE6以下的浏览器        }        if(type == &quot;get&quot;){            //判断参数存在且不为空            if(params &amp;&amp; params != &quot;&quot;){                url += &quot;?&quot; + params;            }        }        //2.设置请求行open(请求方式,请求url,异步)        xhr.open(type,url,async);        if(type == &quot;get&quot;){            xhr.send(null);        }else if(type == &quot;post&quot;){        //3.post方式 设置请求头，请求体            xhr.setRequestHeader(&quot;Content-Type&quot;,&quot;application/x-www-form-urlencoded&quot;);            xhr.send(params);        }        //4.让异步对象接收服务器的响应数据        if(async){            xhr.onreadystatechange = function(){                if(xhr.readyState == 4 &amp;&amp; xhr.status ==200){                    var result = null;                    //判断服务器响应的数据类型                    if(dataType == &quot;json&quot;){                        result = JSON.parse(xhr.responseText);                    }else if(dataType == &quot;xml&quot;){                        result = xhr.responseXML;                    }else{                        result = xhr.responseText;                    }                    //回调函数                    if(callback){                        callback(result);                    }                }            }        }   }</code></pre><blockquote><p>以上封装方式有两个缺点：<br>1.参数的顺序不可变<br>2.参数没有默认值，每次调用都需要传递</p></blockquote><h2 id="优化后"><a href="#优化后" class="headerlink" title="优化后"></a>优化后</h2><blockquote><p>由于以上封装方法存在缺点，进一步优化，将封装的方式变为一个对象；</p></blockquote><pre><code>function myAjax(obj) {        var defaults = {            type: &quot;get&quot;,            url: &quot;#&quot;,            dataType: &quot;json&quot;,            data: {},            async: true,            success: function (result) {                console.log(result);            }        }        //obj中的属性，覆盖到defults中的属性        //1.如果某些属性只存在于obj中，则会给defaults增加属性        //2.如果某些属性obj和defaults中都存在，会将defaults中的默认值覆盖        //3.如果某些属性只在defaults中存在，在obj中不存在，这时候将保留defaults中预定义的内容        for (var key in obj) {            defaults[key] = obj[key];        }        //第一步        var xhr = null;        if (window.XMLHttpRequest) {            xhr = new XMLHttpRequest();        } else {            xhr = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);        }        //得到params        var params = &quot;&quot;;        for (var attr in defaults.data) {            params += attr + &quot;=&quot; + defaults.data[attr] + &quot;&amp;&quot;;        }        if (params) {            params = params.substring(0, params.length - 1);        }        if (defaults.type == &quot;get&quot;) {            defaults.url += &quot;?&quot; + params;        }        //第二步        xhr.open(defaults.type, defaults.url, defaults.async);        if (defaults.type == &quot;get&quot;) {            xhr.send(null);        } else if (defaults.type == &quot;post&quot;) {            xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);            xhr.send(params);        }        //第三步        if (defaults.async) {            xhr.onreadystatechange = function () {                if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {                    var result = null;                    if (defaults.dataType == &quot;json&quot;) {                        result = JSON.parse(xhr.responseText);                    } else if (defaults.dataType == &quot;xml&quot;) {                        result = xhr.responseXML;                    } else {                        result = xhr.responseText;                    }                    defaults.success(result);                }            }        } else {            if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {                var result = null;                if (defaults.dataType == &quot;json&quot;) {                    result = JSON.parse(xhr.responseText);                } else if (defaults.dataType == &quot;xml&quot;) {                    result = xhr.responseXML;                } else {                    result = xhr.responseText;                }                defaults.success(result);            }        }    }</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+          <category> ajax </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 前端 </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ajax </tag>
             
         </tags>
       
@@ -64,18 +95,18 @@
     
     
     <entry>
-      <title>Ajax的封装</title>
-      <link href="/2020/02/08/ajax-1/"/>
-      <url>/2020/02/08/ajax-1/</url>
+      <title>浏览器访问服务器的过程</title>
+      <link href="/2020/02/08/%E9%9D%A2%E8%AF%95-02/"/>
+      <url>/2020/02/08/%E9%9D%A2%E8%AF%95-02/</url>
       
-        <content type="html"><![CDATA[<blockquote><p>原生js封装一个ajax</p></blockquote><h2 id="将ajax封装"><a href="#将ajax封装" class="headerlink" title="将ajax封装"></a>将ajax封装</h2><pre><code>function myAjax(type,url,params,dataType,callback,async){        var xhr = null;        //1.创建异步对象        if(window.XMLHttpRequest){            xhr = new XMLHttpRequest();        }else{            xhr = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);//兼容IE6以下的浏览器        }        if(type == &quot;get&quot;){            //判断参数存在且不为空            if(params &amp;&amp; params != &quot;&quot;){                url += &quot;?&quot; + params;            }        }        //2.设置请求行open(请求方式,请求url,异步)        xhr.open(type,url,async);        if(type == &quot;get&quot;){            xhr.send(null);        }else if(type == &quot;post&quot;){        //3.post方式 设置请求头，请求体            xhr.setRequestHeader(&quot;Content-Type&quot;,&quot;application/x-www-form-urlencoded&quot;);            xhr.send(params);        }        //4.让异步对象接收服务器的响应数据        if(async){            xhr.onreadystatechange = function(){                if(xhr.readyState == 4 &amp;&amp; xhr.status ==200){                    var result = null;                    //判断服务器响应的数据类型                    if(dataType == &quot;json&quot;){                        result = JSON.parse(xhr.responseText);                    }else if(dataType == &quot;xml&quot;){                        result = xhr.responseXML;                    }else{                        result = xhr.responseText;                    }                    //回调函数                    if(callback){                        callback(result);                    }                }            }        }   }</code></pre><blockquote><p>以上封装方式有两个缺点：<br>1.参数的顺序不可变<br>2.参数没有默认值，每次调用都需要传递</p></blockquote><h2 id="优化后"><a href="#优化后" class="headerlink" title="优化后"></a>优化后</h2><blockquote><p>由于以上封装方法存在缺点，进一步优化，将封装的方式变为一个对象；</p></blockquote><pre><code>function myAjax(obj) {        var defaults = {            type: &quot;get&quot;,            url: &quot;#&quot;,            dataType: &quot;json&quot;,            data: {},            async: true,            success: function (result) {                console.log(result);            }        }        //obj中的属性，覆盖到defults中的属性        //1.如果某些属性只存在于obj中，则会给defaults增加属性        //2.如果某些属性obj和defaults中都存在，会将defaults中的默认值覆盖        //3.如果某些属性只在defaults中存在，在obj中不存在，这时候将保留defaults中预定义的内容        for (var key in obj) {            defaults[key] = obj[key];        }        //第一步        var xhr = null;        if (window.XMLHttpRequest) {            xhr = new XMLHttpRequest();        } else {            xhr = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);        }        //得到params        var params = &quot;&quot;;        for (var attr in defaults.data) {            params += attr + &quot;=&quot; + defaults.data[attr] + &quot;&amp;&quot;;        }        if (params) {            params = params.substring(0, params.length - 1);        }        if (defaults.type == &quot;get&quot;) {            defaults.url += &quot;?&quot; + params;        }        //第二步        xhr.open(defaults.type, defaults.url, defaults.async);        if (defaults.type == &quot;get&quot;) {            xhr.send(null);        } else if (defaults.type == &quot;post&quot;) {            xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);            xhr.send(params);        }        //第三步        if (defaults.async) {            xhr.onreadystatechange = function () {                if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {                    var result = null;                    if (defaults.dataType == &quot;json&quot;) {                        result = JSON.parse(xhr.responseText);                    } else if (defaults.dataType == &quot;xml&quot;) {                        result = xhr.responseXML;                    } else {                        result = xhr.responseText;                    }                    defaults.success(result);                }            }        } else {            if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {                var result = null;                if (defaults.dataType == &quot;json&quot;) {                    result = JSON.parse(xhr.responseText);                } else if (defaults.dataType == &quot;xml&quot;) {                    result = xhr.responseXML;                } else {                    result = xhr.responseText;                }                defaults.success(result);            }        }    }</code></pre>]]></content>
+        <content type="html"><![CDATA[<blockquote><p>从浏览器地址栏输入URL到展示页面经历了什么~</p></blockquote><ol><li>在浏览器地址栏中输入网址。</li><li>浏览器通过用户在地址栏中输入的url构建HTTP请求报文。</li><li>浏览器发起DNS解析请求，将域名转换为IP地址</li><li>浏览器将请求报文发送给服务器。</li><li>服务器接收请求报文，并解析。</li><li>浏览器处理用户请求，并将处理结果封装成HTTP响应报文。</li><li>服务器将HTTP响应报文发送给浏览器。</li><li>浏览器接收服务器响应的HTTP报文，并解析。</li><li>浏览器解析HTML页面并展示，在解析HTML页面时遇到新的资源需要再次发起请求。</li><li>最终浏览器展示出页面。</li></ol>]]></content>
       
       
       <categories>
           
           <category> 前端 </category>
           
-          <category> ajax </category>
+          <category> 面试 </category>
           
       </categories>
       
@@ -84,40 +115,7 @@
             
             <tag> 前端 </tag>
             
-            <tag> js </tag>
-            
-            <tag> ajax </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>创建对象几种形式</title>
-      <link href="/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/"/>
-      <url>/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>创建对象几种形式</p></blockquote><a id="more"></a> <h2 id="方式一-Object构造函数模式"><a href="#方式一-Object构造函数模式" class="headerlink" title="方式一: Object构造函数模式"></a>方式一: Object构造函数模式</h2><ul><li>套路: 先创建空Object对象, 再动态添加属性/方法</li><li>适用场景: 起始时不确定对象内部数据</li><li>问题: 语句太多</li></ul><blockquote><pre><code>var p = new Object()//先创建空Object对象p = {} //此时内部数据是不确定的, 再动态添加属性/方法p.name = &apos;Tom&apos;p.age = 12p.setName = function (name) {  this.name = name}</code></pre></blockquote><h2 id="方式二-对象字面量模式"><a href="#方式二-对象字面量模式" class="headerlink" title="方式二: 对象字面量模式"></a>方式二: 对象字面量模式</h2><ul><li>套路: 使用{}创建对象, 同时指定属性/方法</li><li>适用场景: 起始时对象内部数据是确定的</li><li>问题: 如果创建多个对象, 有重复代码</li></ul><blockquote><pre><code>  var p = {  name: &apos;Tom&apos;,  age: 12,  setName: function (name) {    this.name = name  }}</code></pre></blockquote><h2 id="方式三-工厂模式"><a href="#方式三-工厂模式" class="headerlink" title="方式三: 工厂模式"></a>方式三: 工厂模式</h2><ul><li>套路: 通过工厂函数动态创建对象并返回</li><li>适用场景: 需要创建多个对象</li><li>问题: 对象没有一个具体的类型, 都是Object类型</li></ul><blockquote><pre><code>function createPerson(name, age) {   var obj = {//返回一个对象的函数    name: name,    age: age,    setName: function (name) {      this.name = name    }  }  return obj}</code></pre></blockquote><p>工厂模式无法识别对象的类型，因为它们直接由 Object() 构造函数创建，原型链上只有 Object.prototype 对象，不像Date、Array等。</p><h2 id="方式四-自定义构造函数模式"><a href="#方式四-自定义构造函数模式" class="headerlink" title="方式四: 自定义构造函数模式"></a>方式四: 自定义构造函数模式</h2><ul><li>套路: 自定义构造函数, 通过new创建对象</li><li>适用场景: 需要创建多个类型确定的对象</li><li>问题: 每个对象都有相同的数据, 浪费内存</li></ul><p>构造函数就是一个普通的函数，创建方式和普通函数没有区别，不同的是构造函数习惯上首字母大写。另外就是调用方式的不同，普通函数是直接调用，而构造函数需要使用new关键字来调用。</p><h1 id="1-构造函数的执行流程："><a href="#1-构造函数的执行流程：" class="headerlink" title="1.构造函数的执行流程："></a>1.构造函数的执行流程：</h1><p>1.立刻创建一个新的对象</p><p>2.将新建的对象设置为函数中this</p><p>3.逐行执行函数中的代码</p><p>4.将新建的对象作为返回值返回</p><blockquote><pre><code>function Person(name, age) {   this.name = name   this.age = age   this.setName = function (name) {     this.name = name   } }var p1 = new Person(&apos;Tom&apos;, 12)function Student(name, price) {     this.name = name     this.price = price     this.setName = function (name) {       this.name = name     }   } var s1 = new Student(&apos;Bob&apos;, 13000) console.log(p1 instanceof Person)//true console.log(s1 instanceof Student)//true console.log(p1,s1)</code></pre></blockquote><p>使用instanceof可以检查一个对象是否是一个类的实例。所有的对象都是Object的后代，所以任何对象和Object左instanceof检查时都会返回true。</p><h1 id="2-注意点"><a href="#2-注意点" class="headerlink" title="2.注意点"></a>2.注意点</h1><p>p1和p2都是Person这个类的实例，所以都拥有setName这个方法，但是不同实例之间的方法是不一样的。在类中给实例增加的属性(this.xxx=xxx)属于当前实例的私有的属性，实例和实例之间是单独的个体，所以私有的属性之间是不相等的。</p><blockquote><p>var p2 = new Person(‘jack’, 12)<br>    console.log(p1.setName === p2.setName);</p></blockquote><p>每创建一个Person构造函数，在Person构造函数中，为每一个对象都添加了一个setName方法，也就是说构造函数每执行一次就会创建一个新的setName方法。这样就导致了构造函数执行一次就会创建一个新的方法，执行10000次就会创建10000个新的方法，而10000个方法都是一模一样的，这是完全没有必要，完全可以使所有的对象共享同一个方法。</p><blockquote><pre><code>function Person(name, age) {   this.name = name   this.age = age   this.setName = fun }function fun(){   alert(&quot;Hello大家好，我是:&quot;+this.name);};</code></pre></blockquote><p>将函数定义在全局作用域这种方法，虽然会提升性能，但污染了全局作用域的命名空间,而且定义在全局作用域中也很不安全。那么有没有更好的办法呢？</p><p>方式五: 构造函数+原型的组合模式<br>套路: 自定义构造函数, 属性在函数中初始化, 方法添加到原型上<br>适用场景: 需要创建多个类型确定的对象<br>我们所创建的每一个函数，解析器都会向函数中添加一个属性prototype，这个属性对应着一个对象，这个对象就是我们所谓的原型对象。如果函数作为普通函数调用prototype没有任何作用。当函数以构造函数的形式调用时，它所创建的对象中都会有一个隐含的属性，指向该构造函数的原型对象，我们可以通过<strong>proto</strong>来访问该属性。</p><blockquote><pre><code>function MyClass() {}var mc = new MyClass()console.log(mc.__proto__ === MyClass.prototype)//true</code></pre></blockquote><p>原型对象就相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，我们可以将对象中共有的内容，统一设置到原型对象中。当我们访问对象的一个属性或方法时，它会先在对象自身中寻找，如果有则直接使用，如果没有则会去原型对象中寻找，如果找到则直接使用。如果没有则去原型的原型中寻找,直到找到Object对象的原型，Object对象的原型没有原型，如果在Object原型中依然没有找到，则返回undefined。</p><blockquote><pre><code>function Person(name, age) { //在构造函数中只初始化一般函数  this.name = name  this.age = age}Person.prototype.setName = function (name) {  this.name = name}var p1 = new Person(&apos;Tom&apos;, 23)var p2 = new Person(&apos;Jack&apos;, 24)console.log(p1, p2) p1.setName(&quot;james&quot;)//p1没有这个方法，就会去原型对象中寻找 console.log(p1)//Person{name: &quot;james&quot;, age: 23}</code></pre></blockquote><p>以后我们创建构造函数时，可以将这些对象共有的属性和方法，统一添加到构造函数的原型对象中，这样不用分别为每一个对象添加，也不会影响到全局作用域，就可以使每个对象都具有这些属性和方法了。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 前端 </category>
-          
-          <category> js </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 前端 </tag>
-            
-            <tag> 学习之旅 </tag>
-            
-            <tag> js </tag>
+            <tag> 面试 </tag>
             
         </tags>
       
@@ -149,6 +147,37 @@
             <tag> js </tag>
             
             <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>创建对象几种形式</title>
+      <link href="/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/"/>
+      <url>/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>创建对象几种形式</p></blockquote><a id="more"></a> <h2 id="方式一-Object构造函数模式"><a href="#方式一-Object构造函数模式" class="headerlink" title="方式一: Object构造函数模式"></a>方式一: Object构造函数模式</h2><ul><li>套路: 先创建空Object对象, 再动态添加属性/方法</li><li>适用场景: 起始时不确定对象内部数据</li><li>问题: 语句太多</li></ul><blockquote><pre><code>var p = new Object()//先创建空Object对象p = {} //此时内部数据是不确定的, 再动态添加属性/方法p.name = &apos;Tom&apos;p.age = 12p.setName = function (name) {  this.name = name}</code></pre></blockquote><h2 id="方式二-对象字面量模式"><a href="#方式二-对象字面量模式" class="headerlink" title="方式二: 对象字面量模式"></a>方式二: 对象字面量模式</h2><ul><li>套路: 使用{}创建对象, 同时指定属性/方法</li><li>适用场景: 起始时对象内部数据是确定的</li><li>问题: 如果创建多个对象, 有重复代码</li></ul><blockquote><pre><code>  var p = {  name: &apos;Tom&apos;,  age: 12,  setName: function (name) {    this.name = name  }}</code></pre></blockquote><h2 id="方式三-工厂模式"><a href="#方式三-工厂模式" class="headerlink" title="方式三: 工厂模式"></a>方式三: 工厂模式</h2><ul><li>套路: 通过工厂函数动态创建对象并返回</li><li>适用场景: 需要创建多个对象</li><li>问题: 对象没有一个具体的类型, 都是Object类型</li></ul><blockquote><pre><code>function createPerson(name, age) {   var obj = {//返回一个对象的函数    name: name,    age: age,    setName: function (name) {      this.name = name    }  }  return obj}</code></pre></blockquote><p>工厂模式无法识别对象的类型，因为它们直接由 Object() 构造函数创建，原型链上只有 Object.prototype 对象，不像Date、Array等。</p><h2 id="方式四-自定义构造函数模式"><a href="#方式四-自定义构造函数模式" class="headerlink" title="方式四: 自定义构造函数模式"></a>方式四: 自定义构造函数模式</h2><ul><li>套路: 自定义构造函数, 通过new创建对象</li><li>适用场景: 需要创建多个类型确定的对象</li><li>问题: 每个对象都有相同的数据, 浪费内存</li></ul><p>构造函数就是一个普通的函数，创建方式和普通函数没有区别，不同的是构造函数习惯上首字母大写。另外就是调用方式的不同，普通函数是直接调用，而构造函数需要使用new关键字来调用。</p><h1 id="1-构造函数的执行流程："><a href="#1-构造函数的执行流程：" class="headerlink" title="1.构造函数的执行流程："></a>1.构造函数的执行流程：</h1><p>1.立刻创建一个新的对象</p><p>2.将新建的对象设置为函数中this</p><p>3.逐行执行函数中的代码</p><p>4.将新建的对象作为返回值返回</p><blockquote><pre><code>function Person(name, age) {   this.name = name   this.age = age   this.setName = function (name) {     this.name = name   } }var p1 = new Person(&apos;Tom&apos;, 12)function Student(name, price) {     this.name = name     this.price = price     this.setName = function (name) {       this.name = name     }   } var s1 = new Student(&apos;Bob&apos;, 13000) console.log(p1 instanceof Person)//true console.log(s1 instanceof Student)//true console.log(p1,s1)</code></pre></blockquote><p>使用instanceof可以检查一个对象是否是一个类的实例。所有的对象都是Object的后代，所以任何对象和Object左instanceof检查时都会返回true。</p><h1 id="2-注意点"><a href="#2-注意点" class="headerlink" title="2.注意点"></a>2.注意点</h1><p>p1和p2都是Person这个类的实例，所以都拥有setName这个方法，但是不同实例之间的方法是不一样的。在类中给实例增加的属性(this.xxx=xxx)属于当前实例的私有的属性，实例和实例之间是单独的个体，所以私有的属性之间是不相等的。</p><blockquote><p>var p2 = new Person(‘jack’, 12)<br>    console.log(p1.setName === p2.setName);</p></blockquote><p>每创建一个Person构造函数，在Person构造函数中，为每一个对象都添加了一个setName方法，也就是说构造函数每执行一次就会创建一个新的setName方法。这样就导致了构造函数执行一次就会创建一个新的方法，执行10000次就会创建10000个新的方法，而10000个方法都是一模一样的，这是完全没有必要，完全可以使所有的对象共享同一个方法。</p><blockquote><pre><code>function Person(name, age) {   this.name = name   this.age = age   this.setName = fun }function fun(){   alert(&quot;Hello大家好，我是:&quot;+this.name);};</code></pre></blockquote><p>将函数定义在全局作用域这种方法，虽然会提升性能，但污染了全局作用域的命名空间,而且定义在全局作用域中也很不安全。那么有没有更好的办法呢？</p><p>方式五: 构造函数+原型的组合模式<br>套路: 自定义构造函数, 属性在函数中初始化, 方法添加到原型上<br>适用场景: 需要创建多个类型确定的对象<br>我们所创建的每一个函数，解析器都会向函数中添加一个属性prototype，这个属性对应着一个对象，这个对象就是我们所谓的原型对象。如果函数作为普通函数调用prototype没有任何作用。当函数以构造函数的形式调用时，它所创建的对象中都会有一个隐含的属性，指向该构造函数的原型对象，我们可以通过<strong>proto</strong>来访问该属性。</p><blockquote><pre><code>function MyClass() {}var mc = new MyClass()console.log(mc.__proto__ === MyClass.prototype)//true</code></pre></blockquote><p>原型对象就相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，我们可以将对象中共有的内容，统一设置到原型对象中。当我们访问对象的一个属性或方法时，它会先在对象自身中寻找，如果有则直接使用，如果没有则会去原型对象中寻找，如果找到则直接使用。如果没有则去原型的原型中寻找,直到找到Object对象的原型，Object对象的原型没有原型，如果在Object原型中依然没有找到，则返回undefined。</p><blockquote><pre><code>function Person(name, age) { //在构造函数中只初始化一般函数  this.name = name  this.age = age}Person.prototype.setName = function (name) {  this.name = name}var p1 = new Person(&apos;Tom&apos;, 23)var p2 = new Person(&apos;Jack&apos;, 24)console.log(p1, p2) p1.setName(&quot;james&quot;)//p1没有这个方法，就会去原型对象中寻找 console.log(p1)//Person{name: &quot;james&quot;, age: 23}</code></pre></blockquote><p>以后我们创建构造函数时，可以将这些对象共有的属性和方法，统一添加到构造函数的原型对象中，这样不用分别为每一个对象添加，也不会影响到全局作用域，就可以使每个对象都具有这些属性和方法了。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+          <category> js </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 前端 </tag>
+            
+            <tag> js </tag>
+            
+            <tag> 学习之旅 </tag>
             
         </tags>
       
@@ -281,35 +310,6 @@
     
     
     <entry>
-      <title>生于忧患,死于安乐</title>
-      <link href="/2019/02/15/%E7%94%9F%E4%BA%8E%E5%BF%A7%E6%82%A3%EF%BC%8C%E6%AD%BB%E4%BA%8E%E5%AE%89%E4%B9%90/"/>
-      <url>/2019/02/15/%E7%94%9F%E4%BA%8E%E5%BF%A7%E6%82%A3%EF%BC%8C%E6%AD%BB%E4%BA%8E%E5%AE%89%E4%B9%90/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>2019年2月15日周五。</p></blockquote><a id="more"></a> <h2 id="大学生活转瞬即逝"><a href="#大学生活转瞬即逝" class="headerlink" title="大学生活转瞬即逝"></a>大学生活转瞬即逝</h2><p><img src="https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/post1.jpg" alt="愁"></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 生活 </category>
-          
-          <category> 心情 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 生活 </tag>
-            
-            <tag> 心情 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Js知识点小结（预编译）</title>
       <link href="/2019/02/15/Js%E7%9F%A5%E8%AF%86%E7%82%B9%E5%B0%8F%E7%BB%93%EF%BC%88%E9%A2%84%E7%BC%96%E8%AF%91%EF%BC%89/"/>
       <url>/2019/02/15/Js%E7%9F%A5%E8%AF%86%E7%82%B9%E5%B0%8F%E7%BB%93%EF%BC%88%E9%A2%84%E7%BC%96%E8%AF%91%EF%BC%89/</url>
@@ -333,6 +333,35 @@
             <tag> 学习之旅 </tag>
             
             <tag> JavaScript </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>生于忧患,死于安乐</title>
+      <link href="/2019/02/15/%E7%94%9F%E4%BA%8E%E5%BF%A7%E6%82%A3%EF%BC%8C%E6%AD%BB%E4%BA%8E%E5%AE%89%E4%B9%90/"/>
+      <url>/2019/02/15/%E7%94%9F%E4%BA%8E%E5%BF%A7%E6%82%A3%EF%BC%8C%E6%AD%BB%E4%BA%8E%E5%AE%89%E4%B9%90/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>2019年2月15日周五。</p></blockquote><a id="more"></a> <h2 id="大学生活转瞬即逝"><a href="#大学生活转瞬即逝" class="headerlink" title="大学生活转瞬即逝"></a>大学生活转瞬即逝</h2><p><img src="https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/post1.jpg" alt="愁"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 生活 </category>
+          
+          <category> 心情 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 生活 </tag>
+            
+            <tag> 心情 </tag>
             
         </tags>
       

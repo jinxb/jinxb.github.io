@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>Category: ES6 | JINXB&#39;S BLOG</title>
+  <title>跨域的实现 | JINXB&#39;S BLOG</title>
   
   <meta name="keywords" content="学习,分享,生活">
   
@@ -72,7 +72,7 @@
   
   
   <div class="cover-wrapper">
-    <cover class='cover  half'>
+    <cover class='cover post half'>
       
         
   <h1 class='title'>JINXB'S BLOG</h1>
@@ -347,34 +347,28 @@
 
   <div class="l_body">
     <div class='body-wrapper'>
-      
-<div class='l_main'>
+      <div class='l_main'>
   
+
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
     
-      
-  <section class="post-list">
-    
-      
-        
-          
-            <div class='post-wrapper'>
-              <article class="post reveal ">
-  
 
 
   <section class='meta'>
     
     
-      <a title='es6正则修饰符' href='/2019/04/15/es6%E6%AD%A3%E5%88%99%E4%BF%AE%E9%A5%B0%E7%AC%A6/'><img class='thumbnail' src='https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/post_image/Es6.jpeg'></a>
+      <a title='跨域的实现' href='/2020/02/20/%E8%B7%A8%E5%9F%9F-1/'><img class='thumbnail' src='https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/post_image/JavaScript.png'></a>
     
     <div class="meta" id="header-meta">
       
         
-  <h2 class="title">
-    <a href="/2019/04/15/es6%E6%AD%A3%E5%88%99%E4%BF%AE%E9%A5%B0%E7%AC%A6/">
-      es6正则修饰符
-    </a>
-  </h2>
+  
+    <h1 class="title">
+      <a href="/2020/02/20/%E8%B7%A8%E5%9F%9F-1/">
+        跨域的实现
+      </a>
+    </h1>
+  
 
 
       
@@ -402,7 +396,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-04-15</p>
+    <p>2020-02-20</p>
   </a>
 </div>
 
@@ -412,11 +406,29 @@
             
   
   <div class='new-meta-item category'>
-    <a href='/categories/%E5%89%8D%E7%AB%AF/ES6/' rel="nofollow">
+    <a href='/categories/%E5%89%8D%E7%AB%AF/%E8%B7%A8%E5%9F%9F/' rel="nofollow">
       <i class="fas fa-folder-open" aria-hidden="true"></i>
-      <p>前端&nbsp;/&nbsp;ES6</p>
+      <p>前端&nbsp;/&nbsp;跨域</p>
     </a>
   </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
 
 
           
@@ -444,13 +456,6 @@
         
           
             
-  <div class="new-meta-item top-post">
-    <a class='notlink'>
-      <i class="fas fa-angle-double-up" aria-hidden="true"></i>
-      <p>近期更新</p>
-    </a>
-  </div>
-
 
           
         
@@ -462,56 +467,231 @@
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      <blockquote>
-<p>es6正则修饰符</p>
+    <section class="article typo">
+      <div class="article-entry" itemprop="articleBody">
+        <blockquote>
+<p>跨域–，为了访问别人的服务器</p>
 </blockquote>
+<h2 id="跨域的实现原理"><a href="#跨域的实现原理" class="headerlink" title="跨域的实现原理"></a>跨域的实现原理</h2><blockquote>
+<p style="text-indent:2em">XMLHttpRequest对象默认情况下无法获取非同源服务器下的数据，所以可以利用script标签的src属性引入一个外部文件，这个外部文件是不涉及同源策略的影响的。</p>
+</blockquote>
+<blockquote>
+<p style="text-indent:2em">跨域的本质其实就是服务器返回一个方法的调用，这个方法是我们是事先定义好的，而方法中的参数就是我们想要的数据。</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>访问外部js文件</li>
+<li>动态创建script标签传入动态参数</li>
+<li>前端界面决定方法名称</li>
+<li>给window对象增加属性进行方法定义</li>
+</ol>
+</blockquote>
+<h2 id="淘宝关键词案例"><a href="#淘宝关键词案例" class="headerlink" title="淘宝关键词案例"></a>淘宝关键词案例</h2><blockquote>
+<p>淘宝提示词接口如下：</p>
+<ol>
+<li>地址：<a href="https://suggest.taobao.com/sug" target="_blank" rel="noopener">https://suggest.taobao.com/sug</a></li>
+<li>请求类型：get</li>
+<li>参数：q——关键词，callback——回调方法名称</li>
+<li>返回数据格式：json</li>
+</ol>
+</blockquote>
+<pre><code>window.onload = function(){
+            var btn = document.querySelector(&quot;#btn&quot;);
+            btn.onclick = function(){
+                var keywordValue = document.querySelector(&quot;#keyword&quot;).value;
+                var script = document.createElement(&quot;script&quot;);
+                script.src = &quot;https://suggest.taobao.com/sug?q=&quot;+keywordValue+&quot;&amp;callback=test&quot;;
+                window[&quot;test&quot;] = function(data){
+                    var tdTag = &quot;&quot;;
+                    for(var i=0;i&lt;data.result.length;i++){
+                        var temp = data.result[i];
+                        var tempSug = temp[0];
+                        tdTag += &quot;&lt;tr&gt;&lt;td&gt;&quot;+tempSug+&quot;&lt;/td&gt;&lt;tr&gt;&quot;;
+                    }
+                    var tbody = document.querySelector(&quot;tbody&quot;);
+                    tbody.innerHTML = tdTag;
+                }
+                var head = document.querySelector(&quot;head&quot;);
+                head.appendChild(script);
+            }
+        }</code></pre><blockquote>
+<p>结果如下</p>
+</blockquote>
+<p> ![跨域][1]<br>  [1]: <a href="https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/post1.jpg" target="_blank" rel="noopener">https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/post1.jpg</a></p>
+
+      </div>
       
-        <div class="readmore">
-          <a href="/2019/04/15/es6%E6%AD%A3%E5%88%99%E4%BF%AE%E9%A5%B0%E7%AC%A6/" class="flat-box">
-            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
-            阅读全文
-          </a>
-        </div>
+      
+        <br>
+        
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-20T22:21:28+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2020年2月20日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E5%89%8D%E7%AB%AF/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>前端</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/js/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>js</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://jinxb.github.io/2020/02/20/%E8%B7%A8%E5%9F%9F-1/&title=跨域的实现 | JINXB'S BLOG&pics=https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/hp.jpeg&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://jinxb.github.io/2020/02/20/%E8%B7%A8%E5%9F%9F-1/&title=跨域的实现 | JINXB'S BLOG&pics=https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/hp.jpeg&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://jinxb.github.io/2020/02/20/%E8%B7%A8%E5%9F%9F-1/&title=跨域的实现 | JINXB'S BLOG&pics=https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/hp.jpeg&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
       
     </div>
-    
-      <div class="full-width auto-padding tags">
-        
-          <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 前端</a>
-        
-          <a href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 学习之旅</a>
-        
-          <a href="/tags/ES6/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> ES6</a>
-        
-      </div>
-    
   </section>
-</article>
 
-            </div>
-          
+
+      
+      
+          <div class="prev-next">
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2020/02/19/ajax-1/" rel="prev" title="Ajax的封装">
+                                  
+                                      Ajax的封装
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/%E5%89%8D%E7%AB%AF/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 前端</a> <a class="tag" href="/tags/js/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> js</a> <a class="tag" href="/tags/ajax/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> ajax</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+          </div>
+      
+    </section>
+  </article>
+
+
+  
+    
+  
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
         
       
     
+  
     
+  
+
+
+  <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
       
-        
       
-    
-  </section>
-  
-    
-    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
-    
-    
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
 
-  
 
 
-    
-  
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '跨域的实现',
+      tools: true
+    }
+  </script>
+
 
 </div>
 <aside class='l_side'>
@@ -707,102 +887,39 @@
         
           
           
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
             
-              <section class='widget list'>
-  
+              
+  <section class='widget toc-wrapper'>
+    
 <header class='blue'>
-  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
   
 </header>
 
-  <div class='content blue'>
-    <ul class="entry">
-      
-        <li><a class="flat-box" title="https://leancloud.cn" href="https://leancloud.cn"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;leancloud热度
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://dashboard.daovoice.io" href="https://dashboard.daovoice.io"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;Daovoice
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://yasuotu.com" href="https://yasuotu.com"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;图片在线压缩
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://edu.aliyun.com/roadmap/frontend?spm=5176.11399608.aliyun-edu-index-banner.6.38854679pfDubx" href="https://edu.aliyun.com/roadmap/frontend?spm=5176.11399608.aliyun-edu-index-banner.6.38854679pfDubx"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;阿里前端测试题
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://muyiy.cn/blog/" href="https://muyiy.cn/blog/"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;高级测试题
-          </div>
-          
-        </a></li>
-      
-    </ul>
-  </div>
-</section>
+    <div class='content blue'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#跨域的实现原理"><span class="toc-text">跨域的实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#淘宝关键词案例"><span class="toc-text">淘宝关键词案例</span></a></li></ol>
+    </div>
+  </section>
+
 
             
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
           
         
       
@@ -1068,50 +1185,113 @@
         
           
           
+        
+          
+          
             
-              
-
-
-  <section class='widget music'>
-    
-<header class='blue'>
-  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+              <section class='widget list'>
   
-    <a class="rightBtn"
-    
-      rel="external nofollow noopener noreferrer"
-    
-    
-      target="_blank"
-    
-    href="https://music.163.com/#/user/home?id=115162125"
-    title="https://music.163.com/#/user/home?id=115162125">
-    <i class="far fa-heart fa-fw"></i></a>
+<header class='blue'>
+  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
   
 </header>
 
-    <div class='content blue'>
+  <div class='content blue'>
+    <ul class="entry">
       
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
-  <div class="aplayer"
-    data-theme="#1BCDFC"
-    
-    
-    data-mode="circulation"
-    data-server="netease"
-    data-type="playlist"
-    data-id="141990563"
-    data-volume="0.7">
+        <li><a class="flat-box" title="https://leancloud.cn" href="https://leancloud.cn"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;leancloud热度
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://dashboard.daovoice.io" href="https://dashboard.daovoice.io"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Daovoice
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://yasuotu.com" href="https://yasuotu.com"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;图片在线压缩
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://edu.aliyun.com/roadmap/frontend?spm=5176.11399608.aliyun-edu-index-banner.6.38854679pfDubx" href="https://edu.aliyun.com/roadmap/frontend?spm=5176.11399608.aliyun-edu-index-banner.6.38854679pfDubx"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;阿里前端测试题
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://muyiy.cn/blog/" href="https://muyiy.cn/blog/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;高级测试题
+          </div>
+          
+        </a></li>
+      
+    </ul>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
-
-
-    </div>
-  </section>
-
+</section>
 
             
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
           
         
           
@@ -1254,6 +1434,38 @@ setInterval("createtime()",250);
 
 
 
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+    
+      
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/volantis@1.0.6/js/volantis.min.js"></script>
+
+    
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'true' == true;
+  var verify = 'true' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "3p5cr4iLy4YKKsCfpCbro9FY-gzGzoHsz",
+    appKey: "kc2l5v6CcWXpphameWGBXryF",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    highlight:'true'
+  })
+  </script>
 
 
 
