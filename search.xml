@@ -64,6 +64,35 @@
     
     
     <entry>
+      <title>浏览器访问服务器的过程</title>
+      <link href="/2020/02/08/%E9%9D%A2%E8%AF%95-02/"/>
+      <url>/2020/02/08/%E9%9D%A2%E8%AF%95-02/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>从浏览器地址栏输入URL到展示页面经历了什么~</p></blockquote><ol><li>在浏览器地址栏中输入网址。</li><li>浏览器通过用户在地址栏中输入的url构建HTTP请求报文。</li><li>浏览器发起DNS解析请求，将域名转换为IP地址</li><li>浏览器将请求报文发送给服务器。</li><li>服务器接收请求报文，并解析。</li><li>浏览器处理用户请求，并将处理结果封装成HTTP响应报文。</li><li>服务器将HTTP响应报文发送给浏览器。</li><li>浏览器接收服务器响应的HTTP报文，并解析。</li><li>浏览器解析HTML页面并展示，在解析HTML页面时遇到新的资源需要再次发起请求。</li><li>最终浏览器展示出页面。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+          <category> 面试 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 前端 </tag>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Vue学习之生命周期函数</title>
       <link href="/2020/02/08/vue-1/"/>
       <url>/2020/02/08/vue-1/</url>
@@ -87,35 +116,6 @@
             <tag> vue </tag>
             
             <tag> js进阶 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>浏览器访问服务器的过程</title>
-      <link href="/2020/02/08/%E9%9D%A2%E8%AF%95-02/"/>
-      <url>/2020/02/08/%E9%9D%A2%E8%AF%95-02/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>从浏览器地址栏输入URL到展示页面经历了什么~</p></blockquote><ol><li>在浏览器地址栏中输入网址。</li><li>浏览器通过用户在地址栏中输入的url构建HTTP请求报文。</li><li>浏览器发起DNS解析请求，将域名转换为IP地址</li><li>浏览器将请求报文发送给服务器。</li><li>服务器接收请求报文，并解析。</li><li>浏览器处理用户请求，并将处理结果封装成HTTP响应报文。</li><li>服务器将HTTP响应报文发送给浏览器。</li><li>浏览器接收服务器响应的HTTP报文，并解析。</li><li>浏览器解析HTML页面并展示，在解析HTML页面时遇到新的资源需要再次发起请求。</li><li>最终浏览器展示出页面。</li></ol>]]></content>
-      
-      
-      <categories>
-          
-          <category> 前端 </category>
-          
-          <category> 面试 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 前端 </tag>
-            
-            <tag> 面试 </tag>
             
         </tags>
       
@@ -175,40 +175,9 @@
             
             <tag> 前端 </tag>
             
+            <tag> 学习之旅 </tag>
+            
             <tag> js </tag>
-            
-            <tag> 学习之旅 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>CSS3经典问题</title>
-      <link href="/2019/04/15/CSS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98/"/>
-      <url>/2019/04/15/CSS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>&emsp;&emsp;BFC（Block FormattingContext）格式化上下文，是Web页面中盒模型布局的CSS渲染模式，指一个独立的渲染区域或者说是一个隔离的独立容器。</p></blockquote><a id="more"></a> <h2 id="BFC应用"><a href="#BFC应用" class="headerlink" title="BFC应用"></a>BFC应用</h2><blockquote><ul><li>防止margin重叠</li><li>清除内部浮动</li><li>自适应两（多）栏布局</li><li>防止字体环绕</li></ul></blockquote><p>触发BFC条件</p><blockquote><ul><li>根元素</li><li>float的值不为none</li><li>overflow的值不为visible</li><li>display的值为inline-block、table-cell、table-caption</li><li>position的值为absolute、fixed</li></ul></blockquote><p>BFC的特性</p><blockquote><ul><li>内部的Box会在垂直方向上一个接一个的放置。</li><li>垂直方向上的距离由margin决定</li><li>bfc的区域不会与float的元素区域重叠。</li><li>计算bfc的高度时，浮动元素也参与计算</li><li>bfc就是页面上的一个独立容器，容器里面的子元素不会影响外面元素。</li></ul></blockquote><h1 id="div水平居中"><a href="#div水平居中" class="headerlink" title="div水平居中"></a>div水平居中</h1><p>1.行内元素</p><pre><code>.parent {    text-align: center;}</code></pre><p>2.块级元素</p><pre><code>.son {    margin: 0 auto;}</code></pre><p>3.flex布局</p><pre><code>.parent {    display: flex;    justify-content: center;}</code></pre><p>4.绝对定位定宽</p><pre><code>.son {    position: absolute;    width: 宽度;    left: 50%;    margin-left: -0.5*宽度}</code></pre><p>5.绝对定位不定宽</p><pre><code>.son {    position: absolute;    left: 50%;    transform: translate(-50%, 0);}</code></pre><p>6.left/right: 0</p><pre><code>.son {    position: absolute;    width: 宽度;    left: 0;    right: 0;    margin: 0 auto;}</code></pre><hr><h2 id="div垂直居中"><a href="#div垂直居中" class="headerlink" title="div垂直居中"></a>div垂直居中</h2><p>1.行内元素</p><pre><code>.parent {        height: 高度;    }.son {    line-height: 高度;}</code></pre><p>2.table</p><pre><code>.parent {  display: table;}.son {  display: table-cell;  vertical-align: middle;}</code></pre><p>3.flex</p><pre><code>.parent {    display: flex;    align-items: center;}</code></pre><p>4.绝对定位定高</p><pre><code>.son {    position: absolute;    top: 50%;    height: 高度;    margin-top: -0.5高度;}</code></pre><p>5.绝对定位不定高</p><pre><code>.son {    position: absolute;    top: 50%;    transform: translate( 0, -50%);}</code></pre><p>6.top/bottom: 0</p><pre><code>.son {    position: absolute;    height: 高度;    top: 0;    bottom: 0;    margin: auto 0;}</code></pre><hr><h2 id="绝对定位和相对定位"><a href="#绝对定位和相对定位" class="headerlink" title="绝对定位和相对定位"></a>绝对定位和相对定位</h2><blockquote><ol><li>absolute 绝对定位 相对于最近的已定位的祖先元素, 有已定位(指position不是static的元素)祖先元素, 以最近的祖先元素为参考标准。如果无已定位祖先元素, 以body元素为偏移参照基准, 完全脱离了标准文档流</li><li>fixed   固定定位的元素会相对于视窗来定位,这意味着即便页面滚动，它还是会停留在相同的位置。一个固定定位元素不会保留它原本在页面应有的空隙。</li></ol></blockquote><p>共同点：改变行内元素的呈现方式，都脱离了文档流；不同点：absolute的”根元素“是可以设置的，fixed的“根元素”固定为浏览器窗口</p><hr><h2 id="让元素消失"><a href="#让元素消失" class="headerlink" title="让元素消失"></a>让元素消失</h2><pre><code>visibility:hidden、display:none、z-index=-1、opacity：0</code></pre><ul><li>opacity：0,该元素隐藏起来了，但不会改变页面布局，并且，如果该元素已经绑定了一些事件，如click事件也能触发</li><li>visibility:hidden,该元素隐藏起来了，但不会改变页面布局，但是不会触发该元素已经绑定的事件</li><li>display:none, 把元素隐藏起来，并且会改变页面布局，可以理解成在页面中把该元素删掉</li><li>z-index=-1置于其他元素下面</li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> 前端 </category>
-          
-          <category> CSS3 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 前端 </tag>
-            
-            <tag> 学习之旅 </tag>
-            
-            <tag> CSS3 </tag>
             
         </tags>
       
@@ -271,6 +240,37 @@
             <tag> 学习之旅 </tag>
             
             <tag> ES6 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CSS3经典问题</title>
+      <link href="/2019/04/15/CSS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98/"/>
+      <url>/2019/04/15/CSS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>&emsp;&emsp;BFC（Block FormattingContext）格式化上下文，是Web页面中盒模型布局的CSS渲染模式，指一个独立的渲染区域或者说是一个隔离的独立容器。</p></blockquote><a id="more"></a> <h2 id="BFC应用"><a href="#BFC应用" class="headerlink" title="BFC应用"></a>BFC应用</h2><blockquote><ul><li>防止margin重叠</li><li>清除内部浮动</li><li>自适应两（多）栏布局</li><li>防止字体环绕</li></ul></blockquote><p>触发BFC条件</p><blockquote><ul><li>根元素</li><li>float的值不为none</li><li>overflow的值不为visible</li><li>display的值为inline-block、table-cell、table-caption</li><li>position的值为absolute、fixed</li></ul></blockquote><p>BFC的特性</p><blockquote><ul><li>内部的Box会在垂直方向上一个接一个的放置。</li><li>垂直方向上的距离由margin决定</li><li>bfc的区域不会与float的元素区域重叠。</li><li>计算bfc的高度时，浮动元素也参与计算</li><li>bfc就是页面上的一个独立容器，容器里面的子元素不会影响外面元素。</li></ul></blockquote><h1 id="div水平居中"><a href="#div水平居中" class="headerlink" title="div水平居中"></a>div水平居中</h1><p>1.行内元素</p><pre><code>.parent {    text-align: center;}</code></pre><p>2.块级元素</p><pre><code>.son {    margin: 0 auto;}</code></pre><p>3.flex布局</p><pre><code>.parent {    display: flex;    justify-content: center;}</code></pre><p>4.绝对定位定宽</p><pre><code>.son {    position: absolute;    width: 宽度;    left: 50%;    margin-left: -0.5*宽度}</code></pre><p>5.绝对定位不定宽</p><pre><code>.son {    position: absolute;    left: 50%;    transform: translate(-50%, 0);}</code></pre><p>6.left/right: 0</p><pre><code>.son {    position: absolute;    width: 宽度;    left: 0;    right: 0;    margin: 0 auto;}</code></pre><hr><h2 id="div垂直居中"><a href="#div垂直居中" class="headerlink" title="div垂直居中"></a>div垂直居中</h2><p>1.行内元素</p><pre><code>.parent {        height: 高度;    }.son {    line-height: 高度;}</code></pre><p>2.table</p><pre><code>.parent {  display: table;}.son {  display: table-cell;  vertical-align: middle;}</code></pre><p>3.flex</p><pre><code>.parent {    display: flex;    align-items: center;}</code></pre><p>4.绝对定位定高</p><pre><code>.son {    position: absolute;    top: 50%;    height: 高度;    margin-top: -0.5高度;}</code></pre><p>5.绝对定位不定高</p><pre><code>.son {    position: absolute;    top: 50%;    transform: translate( 0, -50%);}</code></pre><p>6.top/bottom: 0</p><pre><code>.son {    position: absolute;    height: 高度;    top: 0;    bottom: 0;    margin: auto 0;}</code></pre><hr><h2 id="绝对定位和相对定位"><a href="#绝对定位和相对定位" class="headerlink" title="绝对定位和相对定位"></a>绝对定位和相对定位</h2><blockquote><ol><li>absolute 绝对定位 相对于最近的已定位的祖先元素, 有已定位(指position不是static的元素)祖先元素, 以最近的祖先元素为参考标准。如果无已定位祖先元素, 以body元素为偏移参照基准, 完全脱离了标准文档流</li><li>fixed   固定定位的元素会相对于视窗来定位,这意味着即便页面滚动，它还是会停留在相同的位置。一个固定定位元素不会保留它原本在页面应有的空隙。</li></ol></blockquote><p>共同点：改变行内元素的呈现方式，都脱离了文档流；不同点：absolute的”根元素“是可以设置的，fixed的“根元素”固定为浏览器窗口</p><hr><h2 id="让元素消失"><a href="#让元素消失" class="headerlink" title="让元素消失"></a>让元素消失</h2><pre><code>visibility:hidden、display:none、z-index=-1、opacity：0</code></pre><ul><li>opacity：0,该元素隐藏起来了，但不会改变页面布局，并且，如果该元素已经绑定了一些事件，如click事件也能触发</li><li>visibility:hidden,该元素隐藏起来了，但不会改变页面布局，但是不会触发该元素已经绑定的事件</li><li>display:none, 把元素隐藏起来，并且会改变页面布局，可以理解成在页面中把该元素删掉</li><li>z-index=-1置于其他元素下面</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+          <category> CSS3 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 前端 </tag>
+            
+            <tag> 学习之旅 </tag>
+            
+            <tag> CSS3 </tag>
             
         </tags>
       
