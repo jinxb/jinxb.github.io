@@ -124,37 +124,6 @@
     
     
     <entry>
-      <title>创建对象几种形式</title>
-      <link href="/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/"/>
-      <url>/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>创建对象几种形式</p></blockquote><a id="more"></a> <h2 id="方式一-Object构造函数模式"><a href="#方式一-Object构造函数模式" class="headerlink" title="方式一: Object构造函数模式"></a>方式一: Object构造函数模式</h2><ul><li>套路: 先创建空Object对象, 再动态添加属性/方法</li><li>适用场景: 起始时不确定对象内部数据</li><li>问题: 语句太多</li></ul><blockquote><pre><code>var p = new Object()//先创建空Object对象p = {} //此时内部数据是不确定的, 再动态添加属性/方法p.name = &apos;Tom&apos;p.age = 12p.setName = function (name) {  this.name = name}</code></pre></blockquote><h2 id="方式二-对象字面量模式"><a href="#方式二-对象字面量模式" class="headerlink" title="方式二: 对象字面量模式"></a>方式二: 对象字面量模式</h2><ul><li>套路: 使用{}创建对象, 同时指定属性/方法</li><li>适用场景: 起始时对象内部数据是确定的</li><li>问题: 如果创建多个对象, 有重复代码</li></ul><blockquote><pre><code>  var p = {  name: &apos;Tom&apos;,  age: 12,  setName: function (name) {    this.name = name  }}</code></pre></blockquote><h2 id="方式三-工厂模式"><a href="#方式三-工厂模式" class="headerlink" title="方式三: 工厂模式"></a>方式三: 工厂模式</h2><ul><li>套路: 通过工厂函数动态创建对象并返回</li><li>适用场景: 需要创建多个对象</li><li>问题: 对象没有一个具体的类型, 都是Object类型</li></ul><blockquote><pre><code>function createPerson(name, age) {   var obj = {//返回一个对象的函数    name: name,    age: age,    setName: function (name) {      this.name = name    }  }  return obj}</code></pre></blockquote><p>工厂模式无法识别对象的类型，因为它们直接由 Object() 构造函数创建，原型链上只有 Object.prototype 对象，不像Date、Array等。</p><h2 id="方式四-自定义构造函数模式"><a href="#方式四-自定义构造函数模式" class="headerlink" title="方式四: 自定义构造函数模式"></a>方式四: 自定义构造函数模式</h2><ul><li>套路: 自定义构造函数, 通过new创建对象</li><li>适用场景: 需要创建多个类型确定的对象</li><li>问题: 每个对象都有相同的数据, 浪费内存</li></ul><p>构造函数就是一个普通的函数，创建方式和普通函数没有区别，不同的是构造函数习惯上首字母大写。另外就是调用方式的不同，普通函数是直接调用，而构造函数需要使用new关键字来调用。</p><h1 id="1-构造函数的执行流程："><a href="#1-构造函数的执行流程：" class="headerlink" title="1.构造函数的执行流程："></a>1.构造函数的执行流程：</h1><p>1.立刻创建一个新的对象</p><p>2.将新建的对象设置为函数中this</p><p>3.逐行执行函数中的代码</p><p>4.将新建的对象作为返回值返回</p><blockquote><pre><code>function Person(name, age) {   this.name = name   this.age = age   this.setName = function (name) {     this.name = name   } }var p1 = new Person(&apos;Tom&apos;, 12)function Student(name, price) {     this.name = name     this.price = price     this.setName = function (name) {       this.name = name     }   } var s1 = new Student(&apos;Bob&apos;, 13000) console.log(p1 instanceof Person)//true console.log(s1 instanceof Student)//true console.log(p1,s1)</code></pre></blockquote><p>使用instanceof可以检查一个对象是否是一个类的实例。所有的对象都是Object的后代，所以任何对象和Object左instanceof检查时都会返回true。</p><h1 id="2-注意点"><a href="#2-注意点" class="headerlink" title="2.注意点"></a>2.注意点</h1><p>p1和p2都是Person这个类的实例，所以都拥有setName这个方法，但是不同实例之间的方法是不一样的。在类中给实例增加的属性(this.xxx=xxx)属于当前实例的私有的属性，实例和实例之间是单独的个体，所以私有的属性之间是不相等的。</p><blockquote><p>var p2 = new Person(‘jack’, 12)<br>    console.log(p1.setName === p2.setName);</p></blockquote><p>每创建一个Person构造函数，在Person构造函数中，为每一个对象都添加了一个setName方法，也就是说构造函数每执行一次就会创建一个新的setName方法。这样就导致了构造函数执行一次就会创建一个新的方法，执行10000次就会创建10000个新的方法，而10000个方法都是一模一样的，这是完全没有必要，完全可以使所有的对象共享同一个方法。</p><blockquote><pre><code>function Person(name, age) {   this.name = name   this.age = age   this.setName = fun }function fun(){   alert(&quot;Hello大家好，我是:&quot;+this.name);};</code></pre></blockquote><p>将函数定义在全局作用域这种方法，虽然会提升性能，但污染了全局作用域的命名空间,而且定义在全局作用域中也很不安全。那么有没有更好的办法呢？</p><p>方式五: 构造函数+原型的组合模式<br>套路: 自定义构造函数, 属性在函数中初始化, 方法添加到原型上<br>适用场景: 需要创建多个类型确定的对象<br>我们所创建的每一个函数，解析器都会向函数中添加一个属性prototype，这个属性对应着一个对象，这个对象就是我们所谓的原型对象。如果函数作为普通函数调用prototype没有任何作用。当函数以构造函数的形式调用时，它所创建的对象中都会有一个隐含的属性，指向该构造函数的原型对象，我们可以通过<strong>proto</strong>来访问该属性。</p><blockquote><pre><code>function MyClass() {}var mc = new MyClass()console.log(mc.__proto__ === MyClass.prototype)//true</code></pre></blockquote><p>原型对象就相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，我们可以将对象中共有的内容，统一设置到原型对象中。当我们访问对象的一个属性或方法时，它会先在对象自身中寻找，如果有则直接使用，如果没有则会去原型对象中寻找，如果找到则直接使用。如果没有则去原型的原型中寻找,直到找到Object对象的原型，Object对象的原型没有原型，如果在Object原型中依然没有找到，则返回undefined。</p><blockquote><pre><code>function Person(name, age) { //在构造函数中只初始化一般函数  this.name = name  this.age = age}Person.prototype.setName = function (name) {  this.name = name}var p1 = new Person(&apos;Tom&apos;, 23)var p2 = new Person(&apos;Jack&apos;, 24)console.log(p1, p2) p1.setName(&quot;james&quot;)//p1没有这个方法，就会去原型对象中寻找 console.log(p1)//Person{name: &quot;james&quot;, age: 23}</code></pre></blockquote><p>以后我们创建构造函数时，可以将这些对象共有的属性和方法，统一添加到构造函数的原型对象中，这样不用分别为每一个对象添加，也不会影响到全局作用域，就可以使每个对象都具有这些属性和方法了。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 前端 </category>
-          
-          <category> js </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 前端 </tag>
-            
-            <tag> 学习之旅 </tag>
-            
-            <tag> js </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Javascript前端面试常考知识点(1)</title>
       <link href="/2019/06/20/js%E9%9D%A2%E8%AF%95%E5%BF%85%E5%A4%87/"/>
       <url>/2019/06/20/js%E9%9D%A2%E8%AF%95%E5%BF%85%E5%A4%87/</url>
@@ -186,11 +155,42 @@
     
     
     <entry>
-      <title>CSS3经典问题</title>
-      <link href="/2019/04/15/CSS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98/"/>
-      <url>/2019/04/15/CSS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98/</url>
+      <title>创建对象几种形式</title>
+      <link href="/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/"/>
+      <url>/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/</url>
       
-        <content type="html"><![CDATA[<blockquote><p>&emsp;&emsp;BFC（Block FormattingContext）格式化上下文，是Web页面中盒模型布局的CSS渲染模式，指一个独立的渲染区域或者说是一个隔离的独立容器。</p></blockquote><a id="more"></a> <h2 id="BFC应用"><a href="#BFC应用" class="headerlink" title="BFC应用"></a>BFC应用</h2><blockquote><ul><li>防止margin重叠</li><li>清除内部浮动</li><li>自适应两（多）栏布局</li><li>防止字体环绕</li></ul></blockquote><p>触发BFC条件</p><blockquote><ul><li>根元素</li><li>float的值不为none</li><li>overflow的值不为visible</li><li>display的值为inline-block、table-cell、table-caption</li><li>position的值为absolute、fixed</li></ul></blockquote><p>BFC的特性</p><blockquote><ul><li>内部的Box会在垂直方向上一个接一个的放置。</li><li>垂直方向上的距离由margin决定</li><li>bfc的区域不会与float的元素区域重叠。</li><li>计算bfc的高度时，浮动元素也参与计算</li><li>bfc就是页面上的一个独立容器，容器里面的子元素不会影响外面元素。</li></ul></blockquote><h1 id="div水平居中"><a href="#div水平居中" class="headerlink" title="div水平居中"></a>div水平居中</h1><p>1.行内元素</p><pre><code>.parent {    text-align: center;}</code></pre><p>2.块级元素</p><pre><code>.son {    margin: 0 auto;}</code></pre><p>3.flex布局</p><pre><code>.parent {    display: flex;    justify-content: center;}</code></pre><p>4.绝对定位定宽</p><pre><code>.son {    position: absolute;    width: 宽度;    left: 50%;    margin-left: -0.5*宽度}</code></pre><p>5.绝对定位不定宽</p><pre><code>.son {    position: absolute;    left: 50%;    transform: translate(-50%, 0);}</code></pre><p>6.left/right: 0</p><pre><code>.son {    position: absolute;    width: 宽度;    left: 0;    right: 0;    margin: 0 auto;}</code></pre><hr><h2 id="div垂直居中"><a href="#div垂直居中" class="headerlink" title="div垂直居中"></a>div垂直居中</h2><p>1.行内元素</p><pre><code>.parent {        height: 高度;    }.son {    line-height: 高度;}</code></pre><p>2.table</p><pre><code>.parent {  display: table;}.son {  display: table-cell;  vertical-align: middle;}</code></pre><p>3.flex</p><pre><code>.parent {    display: flex;    align-items: center;}</code></pre><p>4.绝对定位定高</p><pre><code>.son {    position: absolute;    top: 50%;    height: 高度;    margin-top: -0.5高度;}</code></pre><p>5.绝对定位不定高</p><pre><code>.son {    position: absolute;    top: 50%;    transform: translate( 0, -50%);}</code></pre><p>6.top/bottom: 0</p><pre><code>.son {    position: absolute;    height: 高度;    top: 0;    bottom: 0;    margin: auto 0;}</code></pre><hr><h2 id="绝对定位和相对定位"><a href="#绝对定位和相对定位" class="headerlink" title="绝对定位和相对定位"></a>绝对定位和相对定位</h2><blockquote><ol><li>absolute 绝对定位 相对于最近的已定位的祖先元素, 有已定位(指position不是static的元素)祖先元素, 以最近的祖先元素为参考标准。如果无已定位祖先元素, 以body元素为偏移参照基准, 完全脱离了标准文档流</li><li>fixed   固定定位的元素会相对于视窗来定位,这意味着即便页面滚动，它还是会停留在相同的位置。一个固定定位元素不会保留它原本在页面应有的空隙。</li></ol></blockquote><p>共同点：改变行内元素的呈现方式，都脱离了文档流；不同点：absolute的”根元素“是可以设置的，fixed的“根元素”固定为浏览器窗口</p><hr><h2 id="让元素消失"><a href="#让元素消失" class="headerlink" title="让元素消失"></a>让元素消失</h2><pre><code>visibility:hidden、display:none、z-index=-1、opacity：0</code></pre><ul><li>opacity：0,该元素隐藏起来了，但不会改变页面布局，并且，如果该元素已经绑定了一些事件，如click事件也能触发</li><li>visibility:hidden,该元素隐藏起来了，但不会改变页面布局，但是不会触发该元素已经绑定的事件</li><li>display:none, 把元素隐藏起来，并且会改变页面布局，可以理解成在页面中把该元素删掉</li><li>z-index=-1置于其他元素下面</li></ul>]]></content>
+        <content type="html"><![CDATA[<blockquote><p>创建对象几种形式</p></blockquote><a id="more"></a> <h2 id="方式一-Object构造函数模式"><a href="#方式一-Object构造函数模式" class="headerlink" title="方式一: Object构造函数模式"></a>方式一: Object构造函数模式</h2><ul><li>套路: 先创建空Object对象, 再动态添加属性/方法</li><li>适用场景: 起始时不确定对象内部数据</li><li>问题: 语句太多</li></ul><blockquote><pre><code>var p = new Object()//先创建空Object对象p = {} //此时内部数据是不确定的, 再动态添加属性/方法p.name = &apos;Tom&apos;p.age = 12p.setName = function (name) {  this.name = name}</code></pre></blockquote><h2 id="方式二-对象字面量模式"><a href="#方式二-对象字面量模式" class="headerlink" title="方式二: 对象字面量模式"></a>方式二: 对象字面量模式</h2><ul><li>套路: 使用{}创建对象, 同时指定属性/方法</li><li>适用场景: 起始时对象内部数据是确定的</li><li>问题: 如果创建多个对象, 有重复代码</li></ul><blockquote><pre><code>  var p = {  name: &apos;Tom&apos;,  age: 12,  setName: function (name) {    this.name = name  }}</code></pre></blockquote><h2 id="方式三-工厂模式"><a href="#方式三-工厂模式" class="headerlink" title="方式三: 工厂模式"></a>方式三: 工厂模式</h2><ul><li>套路: 通过工厂函数动态创建对象并返回</li><li>适用场景: 需要创建多个对象</li><li>问题: 对象没有一个具体的类型, 都是Object类型</li></ul><blockquote><pre><code>function createPerson(name, age) {   var obj = {//返回一个对象的函数    name: name,    age: age,    setName: function (name) {      this.name = name    }  }  return obj}</code></pre></blockquote><p>工厂模式无法识别对象的类型，因为它们直接由 Object() 构造函数创建，原型链上只有 Object.prototype 对象，不像Date、Array等。</p><h2 id="方式四-自定义构造函数模式"><a href="#方式四-自定义构造函数模式" class="headerlink" title="方式四: 自定义构造函数模式"></a>方式四: 自定义构造函数模式</h2><ul><li>套路: 自定义构造函数, 通过new创建对象</li><li>适用场景: 需要创建多个类型确定的对象</li><li>问题: 每个对象都有相同的数据, 浪费内存</li></ul><p>构造函数就是一个普通的函数，创建方式和普通函数没有区别，不同的是构造函数习惯上首字母大写。另外就是调用方式的不同，普通函数是直接调用，而构造函数需要使用new关键字来调用。</p><h1 id="1-构造函数的执行流程："><a href="#1-构造函数的执行流程：" class="headerlink" title="1.构造函数的执行流程："></a>1.构造函数的执行流程：</h1><p>1.立刻创建一个新的对象</p><p>2.将新建的对象设置为函数中this</p><p>3.逐行执行函数中的代码</p><p>4.将新建的对象作为返回值返回</p><blockquote><pre><code>function Person(name, age) {   this.name = name   this.age = age   this.setName = function (name) {     this.name = name   } }var p1 = new Person(&apos;Tom&apos;, 12)function Student(name, price) {     this.name = name     this.price = price     this.setName = function (name) {       this.name = name     }   } var s1 = new Student(&apos;Bob&apos;, 13000) console.log(p1 instanceof Person)//true console.log(s1 instanceof Student)//true console.log(p1,s1)</code></pre></blockquote><p>使用instanceof可以检查一个对象是否是一个类的实例。所有的对象都是Object的后代，所以任何对象和Object左instanceof检查时都会返回true。</p><h1 id="2-注意点"><a href="#2-注意点" class="headerlink" title="2.注意点"></a>2.注意点</h1><p>p1和p2都是Person这个类的实例，所以都拥有setName这个方法，但是不同实例之间的方法是不一样的。在类中给实例增加的属性(this.xxx=xxx)属于当前实例的私有的属性，实例和实例之间是单独的个体，所以私有的属性之间是不相等的。</p><blockquote><p>var p2 = new Person(‘jack’, 12)<br>    console.log(p1.setName === p2.setName);</p></blockquote><p>每创建一个Person构造函数，在Person构造函数中，为每一个对象都添加了一个setName方法，也就是说构造函数每执行一次就会创建一个新的setName方法。这样就导致了构造函数执行一次就会创建一个新的方法，执行10000次就会创建10000个新的方法，而10000个方法都是一模一样的，这是完全没有必要，完全可以使所有的对象共享同一个方法。</p><blockquote><pre><code>function Person(name, age) {   this.name = name   this.age = age   this.setName = fun }function fun(){   alert(&quot;Hello大家好，我是:&quot;+this.name);};</code></pre></blockquote><p>将函数定义在全局作用域这种方法，虽然会提升性能，但污染了全局作用域的命名空间,而且定义在全局作用域中也很不安全。那么有没有更好的办法呢？</p><p>方式五: 构造函数+原型的组合模式<br>套路: 自定义构造函数, 属性在函数中初始化, 方法添加到原型上<br>适用场景: 需要创建多个类型确定的对象<br>我们所创建的每一个函数，解析器都会向函数中添加一个属性prototype，这个属性对应着一个对象，这个对象就是我们所谓的原型对象。如果函数作为普通函数调用prototype没有任何作用。当函数以构造函数的形式调用时，它所创建的对象中都会有一个隐含的属性，指向该构造函数的原型对象，我们可以通过<strong>proto</strong>来访问该属性。</p><blockquote><pre><code>function MyClass() {}var mc = new MyClass()console.log(mc.__proto__ === MyClass.prototype)//true</code></pre></blockquote><p>原型对象就相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，我们可以将对象中共有的内容，统一设置到原型对象中。当我们访问对象的一个属性或方法时，它会先在对象自身中寻找，如果有则直接使用，如果没有则会去原型对象中寻找，如果找到则直接使用。如果没有则去原型的原型中寻找,直到找到Object对象的原型，Object对象的原型没有原型，如果在Object原型中依然没有找到，则返回undefined。</p><blockquote><pre><code>function Person(name, age) { //在构造函数中只初始化一般函数  this.name = name  this.age = age}Person.prototype.setName = function (name) {  this.name = name}var p1 = new Person(&apos;Tom&apos;, 23)var p2 = new Person(&apos;Jack&apos;, 24)console.log(p1, p2) p1.setName(&quot;james&quot;)//p1没有这个方法，就会去原型对象中寻找 console.log(p1)//Person{name: &quot;james&quot;, age: 23}</code></pre></blockquote><p>以后我们创建构造函数时，可以将这些对象共有的属性和方法，统一添加到构造函数的原型对象中，这样不用分别为每一个对象添加，也不会影响到全局作用域，就可以使每个对象都具有这些属性和方法了。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+          <category> js </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 前端 </tag>
+            
+            <tag> 学习之旅 </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CSS3的新特性and选择器</title>
+      <link href="/2019/04/15/CSS3%E6%96%B0%E7%89%B9%E6%80%A7/"/>
+      <url>/2019/04/15/CSS3%E6%96%B0%E7%89%B9%E6%80%A7/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>CSS3的新特性and选择器</p></blockquote><a id="more"></a><h2 id="CSS3新特性"><a href="#CSS3新特性" class="headerlink" title="CSS3新特性"></a>CSS3新特性</h2><ul><li>word-wrap 文字换行</li><li>text-overflow 超过指定容器的边界时如何显示</li><li>text-decoration 文字渲染</li><li>text-shadow 文字阴影</li><li>gradient 渐变效果</li><li>transition 过渡效果 </li><li>transition-duration：过渡的持续时间</li><li>transform 拉伸，压缩，旋转，偏移等变换</li><li>animation 动画</li></ul><p>transition和animation的区别：<br>  Animation和transition大部分属性是相同的，他们都是随时间改变元素的属性值，他们的主要区别是transition需要触发一个事件才能改变属性，而animation不需要触发任何事件的情况下才会随时间改变属性值，并且transition为2帧，从from …. to，而animation可以一帧一帧的。</p><h2 id="CSS3选择器以及优先级"><a href="#CSS3选择器以及优先级" class="headerlink" title="CSS3选择器以及优先级"></a>CSS3选择器以及优先级</h2><p>!important<br>内联样式style=””<br>ID选择器#id<br>类选择器/属性选择器/伪类选择器.class.active[href=””]<br>元素选择器/关系选择器/伪元素选择器html+div&gt;span::after<br>通配符选择器*</p>]]></content>
       
       
       <categories>
@@ -248,11 +248,11 @@
     
     
     <entry>
-      <title>CSS3的新特性and选择器</title>
-      <link href="/2019/04/15/CSS3%E6%96%B0%E7%89%B9%E6%80%A7/"/>
-      <url>/2019/04/15/CSS3%E6%96%B0%E7%89%B9%E6%80%A7/</url>
+      <title>CSS3经典问题</title>
+      <link href="/2019/04/15/CSS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98/"/>
+      <url>/2019/04/15/CSS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98/</url>
       
-        <content type="html"><![CDATA[<blockquote><p>CSS3的新特性and选择器</p></blockquote><a id="more"></a><h2 id="CSS3新特性"><a href="#CSS3新特性" class="headerlink" title="CSS3新特性"></a>CSS3新特性</h2><ul><li>word-wrap 文字换行</li><li>text-overflow 超过指定容器的边界时如何显示</li><li>text-decoration 文字渲染</li><li>text-shadow 文字阴影</li><li>gradient 渐变效果</li><li>transition 过渡效果 </li><li>transition-duration：过渡的持续时间</li><li>transform 拉伸，压缩，旋转，偏移等变换</li><li>animation 动画</li></ul><p>transition和animation的区别：<br>  Animation和transition大部分属性是相同的，他们都是随时间改变元素的属性值，他们的主要区别是transition需要触发一个事件才能改变属性，而animation不需要触发任何事件的情况下才会随时间改变属性值，并且transition为2帧，从from …. to，而animation可以一帧一帧的。</p><h2 id="CSS3选择器以及优先级"><a href="#CSS3选择器以及优先级" class="headerlink" title="CSS3选择器以及优先级"></a>CSS3选择器以及优先级</h2><p>!important<br>内联样式style=””<br>ID选择器#id<br>类选择器/属性选择器/伪类选择器.class.active[href=””]<br>元素选择器/关系选择器/伪元素选择器html+div&gt;span::after<br>通配符选择器*</p>]]></content>
+        <content type="html"><![CDATA[<blockquote><p>&emsp;&emsp;BFC（Block FormattingContext）格式化上下文，是Web页面中盒模型布局的CSS渲染模式，指一个独立的渲染区域或者说是一个隔离的独立容器。</p></blockquote><a id="more"></a> <h2 id="BFC应用"><a href="#BFC应用" class="headerlink" title="BFC应用"></a>BFC应用</h2><blockquote><ul><li>防止margin重叠</li><li>清除内部浮动</li><li>自适应两（多）栏布局</li><li>防止字体环绕</li></ul></blockquote><p>触发BFC条件</p><blockquote><ul><li>根元素</li><li>float的值不为none</li><li>overflow的值不为visible</li><li>display的值为inline-block、table-cell、table-caption</li><li>position的值为absolute、fixed</li></ul></blockquote><p>BFC的特性</p><blockquote><ul><li>内部的Box会在垂直方向上一个接一个的放置。</li><li>垂直方向上的距离由margin决定</li><li>bfc的区域不会与float的元素区域重叠。</li><li>计算bfc的高度时，浮动元素也参与计算</li><li>bfc就是页面上的一个独立容器，容器里面的子元素不会影响外面元素。</li></ul></blockquote><h1 id="div水平居中"><a href="#div水平居中" class="headerlink" title="div水平居中"></a>div水平居中</h1><p>1.行内元素</p><pre><code>.parent {    text-align: center;}</code></pre><p>2.块级元素</p><pre><code>.son {    margin: 0 auto;}</code></pre><p>3.flex布局</p><pre><code>.parent {    display: flex;    justify-content: center;}</code></pre><p>4.绝对定位定宽</p><pre><code>.son {    position: absolute;    width: 宽度;    left: 50%;    margin-left: -0.5*宽度}</code></pre><p>5.绝对定位不定宽</p><pre><code>.son {    position: absolute;    left: 50%;    transform: translate(-50%, 0);}</code></pre><p>6.left/right: 0</p><pre><code>.son {    position: absolute;    width: 宽度;    left: 0;    right: 0;    margin: 0 auto;}</code></pre><hr><h2 id="div垂直居中"><a href="#div垂直居中" class="headerlink" title="div垂直居中"></a>div垂直居中</h2><p>1.行内元素</p><pre><code>.parent {        height: 高度;    }.son {    line-height: 高度;}</code></pre><p>2.table</p><pre><code>.parent {  display: table;}.son {  display: table-cell;  vertical-align: middle;}</code></pre><p>3.flex</p><pre><code>.parent {    display: flex;    align-items: center;}</code></pre><p>4.绝对定位定高</p><pre><code>.son {    position: absolute;    top: 50%;    height: 高度;    margin-top: -0.5高度;}</code></pre><p>5.绝对定位不定高</p><pre><code>.son {    position: absolute;    top: 50%;    transform: translate( 0, -50%);}</code></pre><p>6.top/bottom: 0</p><pre><code>.son {    position: absolute;    height: 高度;    top: 0;    bottom: 0;    margin: auto 0;}</code></pre><hr><h2 id="绝对定位和相对定位"><a href="#绝对定位和相对定位" class="headerlink" title="绝对定位和相对定位"></a>绝对定位和相对定位</h2><blockquote><ol><li>absolute 绝对定位 相对于最近的已定位的祖先元素, 有已定位(指position不是static的元素)祖先元素, 以最近的祖先元素为参考标准。如果无已定位祖先元素, 以body元素为偏移参照基准, 完全脱离了标准文档流</li><li>fixed   固定定位的元素会相对于视窗来定位,这意味着即便页面滚动，它还是会停留在相同的位置。一个固定定位元素不会保留它原本在页面应有的空隙。</li></ol></blockquote><p>共同点：改变行内元素的呈现方式，都脱离了文档流；不同点：absolute的”根元素“是可以设置的，fixed的“根元素”固定为浏览器窗口</p><hr><h2 id="让元素消失"><a href="#让元素消失" class="headerlink" title="让元素消失"></a>让元素消失</h2><pre><code>visibility:hidden、display:none、z-index=-1、opacity：0</code></pre><ul><li>opacity：0,该元素隐藏起来了，但不会改变页面布局，并且，如果该元素已经绑定了一些事件，如click事件也能触发</li><li>visibility:hidden,该元素隐藏起来了，但不会改变页面布局，但是不会触发该元素已经绑定的事件</li><li>display:none, 把元素隐藏起来，并且会改变页面布局，可以理解成在页面中把该元素删掉</li><li>z-index=-1置于其他元素下面</li></ul>]]></content>
       
       
       <categories>
