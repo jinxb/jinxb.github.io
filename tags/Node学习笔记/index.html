@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>创建对象几种形式 | JINXB&#39;S BLOG</title>
+  <title>Tag: Node学习笔记 | JINXB&#39;S BLOG</title>
   
   <meta name="keywords" content="学习,分享,生活">
   
@@ -72,7 +72,7 @@
   
   
   <div class="cover-wrapper">
-    <cover class='cover post half'>
+    <cover class='cover  half'>
       
         
   <h1 class='title'>JINXB'S BLOG</h1>
@@ -347,28 +347,42 @@
 
   <div class="l_body">
     <div class='body-wrapper'>
-      <div class='l_main'>
+      
+<div class='l_main'>
   
-
-  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
     
+      
+  <section class="post-list">
+    
+      
+        
+          
+        
+          
+        
+      
+    
+    
+      
+        
+          <div class='post-wrapper'>
+            <article class="post reveal ">
+  
 
 
   <section class='meta'>
     
     
-      <a title='创建对象几种形式' href='/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/'><img class='thumbnail' src='https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/post_image/JavaScript.png'></a>
+      <a title='Node.js学习笔记<二>' href='/2020/01/12/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/'><img class='thumbnail' src='https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/post_image/Es6.jpeg'></a>
     
     <div class="meta" id="header-meta">
       
         
-  
-    <h1 class="title">
-      <a href="/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/">
-        创建对象几种形式
-      </a>
-    </h1>
-  
+  <h2 class="title">
+    <a href="/2020/01/12/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/">
+      Node.js学习笔记<二>
+    </a>
+  </h2>
 
 
       
@@ -396,7 +410,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-06-20</p>
+    <p>2020-01-12</p>
   </a>
 </div>
 
@@ -406,29 +420,11 @@
             
   
   <div class='new-meta-item category'>
-    <a href='/categories/%E5%89%8D%E7%AB%AF/js/' rel="nofollow">
+    <a href='/categories/%E5%89%8D%E7%AB%AF/Node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/' rel="nofollow">
       <i class="fas fa-folder-open" aria-hidden="true"></i>
-      <p>前端&nbsp;/&nbsp;js</p>
+      <p>前端&nbsp;/&nbsp;Node学习笔记</p>
     </a>
   </div>
-
-
-          
-        
-          
-            
-  
-    <div class="new-meta-item browse busuanzi">
-      <a class='notlink'>
-        <i class="fas fa-eye" aria-hidden="true"></i>
-        <p>
-          <span id="busuanzi_value_page_pv">
-            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
-          </span>
-        </p>
-      </a>
-    </div>
-  
 
 
           
@@ -440,14 +436,14 @@
       <a class='notlink'>
         <i class="fas fa-keyboard" aria-hidden="true"></i>
         <p>字数统计:</p>
-        <p>1.5k字</p>
+        <p>1.9k字</p>
       </a>
     </div>
     <div class="new-meta-item readtime">
       <a class='notlink'>
         <i class="fas fa-hourglass-half" aria-hidden="true"></i>
         <p>阅读时长≈</p>
-        <p>5分</p>
+        <p>8分</p>
       </a>
     </div>
   
@@ -467,324 +463,180 @@
   </section>
 
 
-    <section class="article typo">
-      <div class="article-entry" itemprop="articleBody">
-        <blockquote>
-<p>创建对象几种形式</p>
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      <blockquote>
+<center><h2>Node基础学习笔记02 —— 【fs模块】</h2></center>
 </blockquote>
-<a id="more"></a> 
-
-<h2 id="方式一-Object构造函数模式"><a href="#方式一-Object构造函数模式" class="headerlink" title="方式一: Object构造函数模式"></a>方式一: Object构造函数模式</h2><ul>
-<li>套路: 先创建空Object对象, 再动态添加属性/方法</li>
-<li>适用场景: 起始时不确定对象内部数据</li>
-<li>问题: 语句太多</li>
-</ul>
-<blockquote>
-<pre><code>var p = new Object()//先创建空Object对象
-p = {} //此时内部数据是不确定的, 再动态添加属性/方法
-p.name = &apos;Tom&apos;
-p.age = 12
-p.setName = function (name) {
-  this.name = name
-}</code></pre></blockquote>
-<h2 id="方式二-对象字面量模式"><a href="#方式二-对象字面量模式" class="headerlink" title="方式二: 对象字面量模式"></a>方式二: 对象字面量模式</h2><ul>
-<li>套路: 使用{}创建对象, 同时指定属性/方法</li>
-<li>适用场景: 起始时对象内部数据是确定的</li>
-<li>问题: 如果创建多个对象, 有重复代码</li>
-</ul>
-<blockquote>
-<pre><code>  var p = {
-  name: &apos;Tom&apos;,
-  age: 12,
-  setName: function (name) {
-    this.name = name
-  }
-}</code></pre></blockquote>
-<h2 id="方式三-工厂模式"><a href="#方式三-工厂模式" class="headerlink" title="方式三: 工厂模式"></a>方式三: 工厂模式</h2><ul>
-<li>套路: 通过工厂函数动态创建对象并返回</li>
-<li>适用场景: 需要创建多个对象</li>
-<li>问题: 对象没有一个具体的类型, 都是Object类型</li>
-</ul>
-<blockquote>
-<pre><code>function createPerson(name, age) { 
-  var obj = {//返回一个对象的函数
-    name: name,
-    age: age,
-    setName: function (name) {
-      this.name = name
-    }
-  }
-  return obj
-}</code></pre></blockquote>
-<p>工厂模式无法识别对象的类型，因为它们直接由 Object() 构造函数创建，原型链上只有 Object.prototype 对象，不像Date、Array等。</p>
-<h2 id="方式四-自定义构造函数模式"><a href="#方式四-自定义构造函数模式" class="headerlink" title="方式四: 自定义构造函数模式"></a>方式四: 自定义构造函数模式</h2><ul>
-<li>套路: 自定义构造函数, 通过new创建对象</li>
-<li>适用场景: 需要创建多个类型确定的对象</li>
-<li>问题: 每个对象都有相同的数据, 浪费内存</li>
-</ul>
-<p>构造函数就是一个普通的函数，创建方式和普通函数没有区别，不同的是构造函数习惯上首字母大写。另外就是调用方式的不同，普通函数是直接调用，而构造函数需要使用new关键字来调用。</p>
-<h1 id="1-构造函数的执行流程："><a href="#1-构造函数的执行流程：" class="headerlink" title="1.构造函数的执行流程："></a>1.构造函数的执行流程：</h1><p>1.立刻创建一个新的对象</p>
-<p>2.将新建的对象设置为函数中this</p>
-<p>3.逐行执行函数中的代码</p>
-<p>4.将新建的对象作为返回值返回</p>
-<blockquote>
-<pre><code>function Person(name, age) {
-   this.name = name
-   this.age = age
-   this.setName = function (name) {
-     this.name = name
-   }
- }
-var p1 = new Person(&apos;Tom&apos;, 12)
-function Student(name, price) {
-     this.name = name
-     this.price = price
-     this.setName = function (name) {
-       this.name = name
-     }
-   }
- var s1 = new Student(&apos;Bob&apos;, 13000)
- console.log(p1 instanceof Person)//true
- console.log(s1 instanceof Student)//true
- console.log(p1,s1)</code></pre></blockquote>
-<p>使用instanceof可以检查一个对象是否是一个类的实例。所有的对象都是Object的后代，所以任何对象和Object左instanceof检查时都会返回true。</p>
-<h1 id="2-注意点"><a href="#2-注意点" class="headerlink" title="2.注意点"></a>2.注意点</h1><p>p1和p2都是Person这个类的实例，所以都拥有setName这个方法，但是不同实例之间的方法是不一样的。在类中给实例增加的属性(this.xxx=xxx)属于当前实例的私有的属性，实例和实例之间是单独的个体，所以私有的属性之间是不相等的。</p>
-<blockquote>
-<p>var p2 = new Person(‘jack’, 12)<br>    console.log(p1.setName === p2.setName);</p>
-</blockquote>
-<p>每创建一个Person构造函数，在Person构造函数中，为每一个对象都添加了一个setName方法，也就是说构造函数每执行一次就会创建一个新的setName方法。这样就导致了构造函数执行一次就会创建一个新的方法，执行10000次就会创建10000个新的方法，而10000个方法都是一模一样的，这是完全没有必要，完全可以使所有的对象共享同一个方法。</p>
-<blockquote>
-<pre><code>function Person(name, age) {
-   this.name = name
-   this.age = age
-   this.setName = fun
- }
-function fun(){
-   alert(&quot;Hello大家好，我是:&quot;+this.name);
-};</code></pre></blockquote>
-<p>将函数定义在全局作用域这种方法，虽然会提升性能，但污染了全局作用域的命名空间,而且定义在全局作用域中也很不安全。那么有没有更好的办法呢？</p>
-<p>方式五: 构造函数+原型的组合模式<br>套路: 自定义构造函数, 属性在函数中初始化, 方法添加到原型上<br>适用场景: 需要创建多个类型确定的对象<br>我们所创建的每一个函数，解析器都会向函数中添加一个属性prototype，这个属性对应着一个对象，这个对象就是我们所谓的原型对象。如果函数作为普通函数调用prototype没有任何作用。当函数以构造函数的形式调用时，它所创建的对象中都会有一个隐含的属性，指向该构造函数的原型对象，我们可以通过<strong>proto</strong>来访问该属性。</p>
-<blockquote>
-<pre><code>function MyClass() {}
-var mc = new MyClass()
-console.log(mc.__proto__ === MyClass.prototype)//true</code></pre></blockquote>
-<p>原型对象就相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，我们可以将对象中共有的内容，统一设置到原型对象中。当我们访问对象的一个属性或方法时，它会先在对象自身中寻找，如果有则直接使用，如果没有则会去原型对象中寻找，如果找到则直接使用。如果没有则去原型的原型中寻找,直到找到Object对象的原型，Object对象的原型没有原型，如果在Object原型中依然没有找到，则返回undefined。</p>
-<blockquote>
-<pre><code>function Person(name, age) { //在构造函数中只初始化一般函数
-  this.name = name
-  this.age = age
-}
-Person.prototype.setName = function (name) {
-  this.name = name
-}
-var p1 = new Person(&apos;Tom&apos;, 23)
-var p2 = new Person(&apos;Jack&apos;, 24)
-console.log(p1, p2)
-
-
- p1.setName(&quot;james&quot;)//p1没有这个方法，就会去原型对象中寻找
- console.log(p1)//Person{name: &quot;james&quot;, age: 23}</code></pre></blockquote>
-<p>以后我们创建构造函数时，可以将这些对象共有的属性和方法，统一添加到构造函数的原型对象中，这样不用分别为每一个对象添加，也不会影响到全局作用域，就可以使每个对象都具有这些属性和方法了。</p>
-
+      
+        <div class="readmore">
+          <a href="/2020/01/12/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/" class="flat-box">
+            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
+            阅读全文
+          </a>
+        </div>
+      
+    </div>
+    
+      <div class="full-width auto-padding tags">
+        
+          <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 前端</a>
+        
+          <a href="/tags/Node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Node学习笔记</a>
+        
+          <a href="/tags/Node%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Node基础学习笔记</a>
+        
       </div>
-      
-      
-        <br>
+    
+  </section>
+</article>
+
+          </div>
         
-
-
-  <section class='meta' id="footer-meta">
-    <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-02-02T19:39:50+08:00">
+          <div class='post-wrapper'>
+            <article class="post reveal ">
+  
+
+
+  <section class='meta'>
+    
+    
+      <a title='Node.js学习笔记<一>' href='/2020/01/08/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/'><img class='thumbnail' src='https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/post_image/Es6.jpeg'></a>
+    
+    <div class="meta" id="header-meta">
+      
+        
+  <h2 class="title">
+    <a href="/2020/01/08/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/">
+      Node.js学习笔记<一>
+    </a>
+  </h2>
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    
+      <a href="https://jinxb.github.io" rel="nofollow">
+        
+          <img src="https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/hp.jpeg">
+        
+        <p>Jinxb</p>
+      </a>
+    
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
   <a class='notlink'>
-    <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年2月2日</p>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2020-01-08</p>
   </a>
 </div>
 
-        
-      
+          
         
           
+            
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E5%89%8D%E7%AB%AF/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>前端</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>学习之旅</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/js/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>js</p></a></div>
-
-
-        
-      
-        
-          
-  <div class="new-meta-item share -mob-share-list">
-  <div class="-mob-share-list share-body">
-    
-      
-        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
-          
-          href="http://connect.qq.com/widget/shareqq/index.html?url=https://jinxb.github.io/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/&title=创建对象几种形式 | JINXB'S BLOG&pics=https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/hp.jpeg&summary=
-创建对象几种形式
-"
-          
-          >
-          
-            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
-          
-        </a>
-      
-    
-      
-        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
-          
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://jinxb.github.io/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/&title=创建对象几种形式 | JINXB'S BLOG&pics=https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/hp.jpeg&summary=
-创建对象几种形式
-"
-          
-          >
-          
-            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
-          
-        </a>
-      
-    
-      
-        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
-          
-          href="http://service.weibo.com/share/share.php?url=https://jinxb.github.io/2019/06/20/js%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F/&title=创建对象几种形式 | JINXB'S BLOG&pics=https://cdn.jsdelivr.net/gh/jinxb/jinxb.github.io/images/hp.jpeg&summary=
-创建对象几种形式
-"
-          
-          >
-          
-            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
-          
-        </a>
-      
-    
+  <div class='new-meta-item category'>
+    <a href='/categories/%E5%89%8D%E7%AB%AF/Node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>前端&nbsp;/&nbsp;Node学习笔记</p>
+    </a>
   </div>
-</div>
 
 
-
+          
         
+          
+            
+  
+    <div class="new-meta-item wordcount">
+      <a class='notlink'>
+        <i class="fas fa-keyboard" aria-hidden="true"></i>
+        <p>字数统计:</p>
+        <p>296字</p>
+      </a>
+    </div>
+    <div class="new-meta-item readtime">
+      <a class='notlink'>
+        <i class="fas fa-hourglass-half" aria-hidden="true"></i>
+        <p>阅读时长≈</p>
+        <p>1分</p>
+      </a>
+    </div>
+  
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
       
     </div>
   </section>
 
 
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      <blockquote>
+<center><h2>Node基础学习笔记01 —— 【了解Node】</h2></center>
+</blockquote>
       
+        <div class="readmore">
+          <a href="/2020/01/08/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/" class="flat-box">
+            <i class="fas fa-book-open fa-fw" aria-hidden="true"></i>
+            阅读全文
+          </a>
+        </div>
       
-          <div class="prev-next">
-              
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
-                          <h4>
-                              <a href="/2020/01/08/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/" rel="prev" title="Node.js学习笔记&lt;一&gt;">
-                                
-                                    Node.js学习笔记&lt;一&gt;
-                                
-                              </a>
-                          </h4>
-                          
-                              
-                              <h6 class="tags">
-                                  <a class="tag" href="/tags/%E5%89%8D%E7%AB%AF/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 前端</a> <a class="tag" href="/tags/Node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Node学习笔记</a> <a class="tag" href="/tags/Node%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Node基础学习笔记</a>
-                              </h6>
-                          
-                      </span>
-                  </section>
-              
-              
-                  <section class="next">
-                      <span class="art-item-right" aria-hidden="true">
-                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
-                          <h4>
-                              <a href="/2019/06/20/js%E9%9D%A2%E8%AF%95%E5%BF%85%E5%A4%87/" rel="prev" title="Javascript前端面试常考知识点(1)">
-                                  
-                                      Javascript前端面试常考知识点(1)
-                                  
-                              </a>
-                          </h4>
-                          
-                              
-                              <h6 class="tags">
-                                  <a class="tag" href="/tags/%E5%89%8D%E7%AB%AF/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 前端</a> <a class="tag" href="/tags/js/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> js</a> <a class="tag" href="/tags/%E9%9D%A2%E8%AF%95/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> 面试</a>
-                              </h6>
-                          
-                      </span>
-                  </section>
-              
+    </div>
+    
+      <div class="full-width auto-padding tags">
+        
+          <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> 前端</a>
+        
+          <a href="/tags/Node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Node学习笔记</a>
+        
+          <a href="/tags/Node%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="nofollow"><i class="fas fa-tag fa-fw"></i> Node基础学习笔记</a>
+        
+      </div>
+    
+  </section>
+</article>
+
           </div>
-      
-    </section>
-  </article>
-
-
-  
-    
-  
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
         
       
     
+  </section>
   
     
+    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
+    
+    
+
   
 
 
-  <!-- 显示推荐文章和评论 -->
-
-
-
-  <article class="post white-box comments">
-    <section class="article typo">
-      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
-      
-      
-      
-      
-        <section id="comments">
-          <div id="valine_container" class="valine_thread">
-            <i class="fas fa-spinner fa-spin fa-fw"></i>
-          </div>
-        </section>
-      
-    </section>
-  </article>
-
-
-
-
-
-
-<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
-
-
-
-  <script>
-    window.subData = {
-      title: '创建对象几种形式',
-      tools: true
-    }
-  </script>
-
-
+    
+  
 </div>
 <aside class='l_side'>
   
@@ -979,39 +831,102 @@ console.log(p1, p2)
         
           
           
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
             
-              
-  <section class='widget toc-wrapper'>
-    
-<header class='blue'>
-  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+              <section class='widget list'>
   
-    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
+<header class='blue'>
+  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
   
 </header>
 
-    <div class='content blue'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#方式一-Object构造函数模式"><span class="toc-text">方式一: Object构造函数模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式二-对象字面量模式"><span class="toc-text">方式二: 对象字面量模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式三-工厂模式"><span class="toc-text">方式三: 工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式四-自定义构造函数模式"><span class="toc-text">方式四: 自定义构造函数模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-构造函数的执行流程："><span class="toc-text">1.构造函数的执行流程：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-注意点"><span class="toc-text">2.注意点</span></a>
-    </div>
-  </section>
-
+  <div class='content blue'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" title="https://leancloud.cn" href="https://leancloud.cn"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;leancloud热度
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://dashboard.daovoice.io" href="https://dashboard.daovoice.io"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;Daovoice
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://yasuotu.com" href="https://yasuotu.com"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;图片在线压缩
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://edu.aliyun.com/roadmap/frontend?spm=5176.11399608.aliyun-edu-index-banner.6.38854679pfDubx" href="https://edu.aliyun.com/roadmap/frontend?spm=5176.11399608.aliyun-edu-index-banner.6.38854679pfDubx"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;阿里前端测试题
+          </div>
+          
+        </a></li>
+      
+        <li><a class="flat-box" title="https://muyiy.cn/blog/" href="https://muyiy.cn/blog/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;高级测试题
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
 
             
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
           
         
       
@@ -1277,113 +1192,50 @@ console.log(p1, p2)
         
           
           
-        
-          
-          
             
-              <section class='widget list'>
-  
+              
+
+
+  <section class='widget music'>
+    
 <header class='blue'>
-  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
+  <div><i class="fas fa-compact-disc fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;最近在听</div>
+  
+    <a class="rightBtn"
+    
+      rel="external nofollow noopener noreferrer"
+    
+    
+      target="_blank"
+    
+    href="https://music.163.com/#/user/home?id=115162125"
+    title="https://music.163.com/#/user/home?id=115162125">
+    <i class="far fa-heart fa-fw"></i></a>
   
 </header>
 
-  <div class='content blue'>
-    <ul class="entry">
+    <div class='content blue'>
       
-        <li><a class="flat-box" title="https://leancloud.cn" href="https://leancloud.cn"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;leancloud热度
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://dashboard.daovoice.io" href="https://dashboard.daovoice.io"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;Daovoice
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://yasuotu.com" href="https://yasuotu.com"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;图片在线压缩
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://edu.aliyun.com/roadmap/frontend?spm=5176.11399608.aliyun-edu-index-banner.6.38854679pfDubx" href="https://edu.aliyun.com/roadmap/frontend?spm=5176.11399608.aliyun-edu-index-banner.6.38854679pfDubx"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;阿里前端测试题
-          </div>
-          
-        </a></li>
-      
-        <li><a class="flat-box" title="https://muyiy.cn/blog/" href="https://muyiy.cn/blog/"
-          
-          
-          >
-          <div class='name'>
-            
-              <i class=" fa-fw" aria-hidden="true"></i>
-            
-            &nbsp;&nbsp;高级测试题
-          </div>
-          
-        </a></li>
-      
-    </ul>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
+  <div class="aplayer"
+    data-theme="#1BCDFC"
+    
+    
+    data-mode="circulation"
+    data-server="netease"
+    data-type="playlist"
+    data-id="141990563"
+    data-volume="0.7">
   </div>
-</section>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
+
+
+    </div>
+  </section>
+
 
             
-          
-        
-      
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
-          
-        
-          
           
         
           
@@ -1532,38 +1384,6 @@ console.log(p1, p2)
 
 
 
-
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  
-    
-      
-<script src="https://cdn.jsdelivr.net/gh/xaoxuu/volantis@1.0.6/js/volantis.min.js"></script>
-
-    
-  
-  <script>
-  var GUEST_INFO = ['nick','mail','link'];
-  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-    return GUEST_INFO.indexOf(item) > -1
-  });
-  var notify = 'true' == true;
-  var verify = 'true' == true;
-  var valine = new Valine();
-  valine.init({
-    el: '#valine_container',
-    notify: notify,
-    verify: verify,
-    guest_info: guest_info,
-    
-    appId: "3p5cr4iLy4YKKsCfpCbro9FY-gzGzoHsz",
-    appKey: "kc2l5v6CcWXpphameWGBXryF",
-    placeholder: "快来评论吧~",
-    pageSize:'10',
-    avatar:'mp',
-    lang:'zh-cn',
-    highlight:'true'
-  })
-  </script>
 
 
 
